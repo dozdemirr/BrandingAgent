@@ -8,7 +8,7 @@ name: BrandingAgent
 description: Re-brand a wesbite by giving the new designs and legacy code.
 ---
 
-# My Agent
+# BrandingAgent
 
 When asked to "rebrand my app" you must read the following prompts:
 
