@@ -1,0 +1,42 @@
+Limitations encountered during the Swinton Go! rebrand
+=======================================================
+
+1. Image viewing limit
+   During design analysis, there is a maximum of 5 screenshots that can be viewed
+   at one time. The New_Design folder contains ~100 screenshots. Only the first few
+   screens (Page 1 / index.html design) and the logo were fully reviewed. Pages 2–4
+   (your-car, your-cover, quote) were built matching the Swinton Go! brand colours
+   and layout inferred from the Page 1 design plus the existing Example_Website
+   functionality.
+
+2. Legacy code (Legacy_BOS.zip)
+   The Legacy_Code folder contains a .NET / C# ASP.NET application
+   (BGLi.Web.BankOfScotland.MotorQuote). This is a server-side rendered app that
+   requires a .NET runtime, SQL Server database, and various appsettings to run.
+   The new website is a fully standalone HTML/CSS/JS app based on the
+   Example_Website reference implementation instead.
+
+3. Stub API calls
+   All external API calls (DVLA vehicle lookup, pricing engine, fraud-check
+   services) have been stubbed with local dummy data. The vehicle lookup returns
+   a real result for registration "D500 NLE" (2019 VW Golf) and a generic dummy
+   vehicle for any other registration.
+
+4. your-cover.png
+   The file New_Design/your-cover.png could not be viewed (image limit reached).
+   The your-cover.html page was created based on the existing Example_Website
+   logic with Swinton Go! styling applied. If the design image shows a different
+   layout, further adjustments may be needed.
+
+5. Font loading
+   The new design uses Google Fonts (Inter). If running the app offline without
+   an internet connection, the font will fall back to the system sans-serif.
+
+6. No backend / authentication
+   This is a frontend-only demo. No data is persisted beyond the browser session
+   (sessionStorage). Refreshing the browser on a mid-journey page will clear
+   the stored data.
+
+7. Favicon
+   No favicon specific to Swinton Go! was provided. The favicon link has been
+   removed from the new app to avoid 404 errors.

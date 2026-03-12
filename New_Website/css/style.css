@@ -1,0 +1,879 @@
+/* Swinton Go! Motor Quote - Standalone Demo App */
+/* Brand: Inter font, orange #e84612 primary, navy #003d8f secondary */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --orange:         #e84612;
+    --orange-dark:    #c73a0e;
+    --orange-light:   #f06840;
+    --navy:           #003d8f;
+    --navy-dark:      #002d6a;
+    --navy-light:     #1a5bbf;
+    --footer-bg:      #1a3566;
+    --success:        #2e7d32;
+    --success-bg:     #e8f5e9;
+    --error:          #c62828;
+    --error-bg:       #ffebee;
+    --focus:          #003d8f;
+    --white:          #ffffff;
+    --body-bg:        #ebebeb;
+    --text:           #1a1a1a;
+    --text-heading:   #1a1a1a;
+    --text-light:     #555555;
+    --border:         #c0c0c0;
+    --border-active:  #003d8f;
+    --shadow:         rgba(0,61,143,0.10);
+    --header-border:  #e0e0e0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { height: 100%; font-size: 100%; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    background: var(--body-bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.page-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--header-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.page-header__wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.page-header__logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.page-header__logo img {
+    height: 44px;
+    width: auto;
+}
+
+/* ── Progress stepper ────────────────────────────────────── */
+.progress-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.progress-bar__inner {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: calc(50% + 12px);
+    right: calc(-50% + 12px);
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+}
+
+.step--done:not(:last-child)::after {
+    background: var(--navy);
+}
+
+.step__dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 2px solid var(--border);
+    margin-bottom: 5px;
+    z-index: 1;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.step--active .step__dot {
+    background: var(--navy);
+    border-color: var(--navy);
+    width: 18px;
+    height: 18px;
+}
+
+.step--done .step__dot {
+    background: var(--navy);
+    border-color: var(--navy);
+}
+
+.step__label {
+    font-size: 11px;
+    color: var(--border);
+    text-align: center;
+    white-space: nowrap;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+.step--active .step__label {
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.step--done .step__label {
+    color: var(--navy);
+}
+
+/* ── Main layout ─────────────────────────────────────────── */
+main { flex: 1; }
+
+.page-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+.page-section--narrow {
+    max-width: 900px;
+}
+
+/* ── Welcome hero ────────────────────────────────────────── */
+.welcome-hero {
+    padding-bottom: 24px;
+}
+
+.welcome-hero h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+}
+
+.welcome-hero p {
+    font-size: 17px;
+    color: var(--text-light);
+    font-weight: 400;
+}
+
+/* ── Two-column layout ───────────────────────────────────── */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+}
+
+/* ── Content sections (no card styling) ─────────────────── */
+.section-block {
+    background: transparent;
+    margin-bottom: 32px;
+}
+
+.section-block__title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+}
+
+.section-block__body {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+/* ── Cards (used on inner pages) ────────────────────────── */
+.card {
+    background: var(--white);
+    border-radius: 6px;
+    padding: 28px;
+    margin-bottom: 20px;
+}
+
+.card__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+}
+
+.card__subtitle {
+    color: var(--text-light);
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.card__divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+}
+
+/* ── Right panel (data usage) ────────────────────────────── */
+.data-panel {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.data-panel h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+}
+
+.data-panel ul {
+    padding-left: 18px;
+    margin-bottom: 12px;
+}
+
+.data-panel ul li {
+    margin-bottom: 4px;
+}
+
+.data-panel a {
+    color: var(--navy);
+    font-weight: 600;
+}
+
+/* ── Info box ────────────────────────────────────────────── */
+.info-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    color: var(--text-light);
+}
+
+/* ── Forms ───────────────────────────────────────────────── */
+.form-row {
+    padding: 12px 0;
+}
+
+.form-row__label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-heading);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.form-row__hint {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-active);
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--navy);
+    box-shadow: 0 0 0 2px rgba(0,61,143,0.15);
+}
+
+.form-control--error { border-color: var(--error); }
+.form-control--short { max-width: 240px; }
+.form-control--date  { max-width: 200px; }
+
+select.form-control {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23003d8f' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+}
+
+.form-row__two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-row__validation-text {
+    color: var(--error);
+    font-size: 13px;
+    margin-top: 5px;
+    display: none;
+}
+
+.form-row__validation-text.visible { display: block; }
+
+/* ── Title / Radio pills (square outlined buttons) ───────── */
+.radio-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.radio-pill {
+    position: relative;
+}
+
+.radio-pill input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio-pill label {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 400;
+    cursor: pointer;
+    min-width: 72px;
+    text-align: center;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    background: var(--white);
+}
+
+.radio-pill input[type="radio"]:checked + label {
+    background: var(--white);
+    border-color: var(--navy);
+    border-width: 2px;
+    color: var(--navy);
+    font-weight: 600;
+}
+
+.radio-pill label:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+}
+
+.radio-pill input[type="radio"]:focus-visible + label {
+    box-shadow: 0 0 0 2px var(--focus);
+}
+
+/* ── Registration plate input ────────────────────────────── */
+.reg-plate-wrapper {
+    display: flex;
+    align-items: stretch;
+    max-width: 340px;
+    border: 3px solid #f7bf00;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f7bf00;
+}
+
+.reg-plate-badge {
+    background: #003399;
+    color: #fff;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    gap: 3px;
+    min-width: 32px;
+}
+
+.reg-plate-badge .eu-stars { font-size: 7px; letter-spacing: 2px; }
+
+.reg-plate-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: #f7bf00;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 14px;
+    color: #111;
+    font-family: 'Inter', 'Arial Black', Arial, sans-serif;
+    outline: none;
+}
+
+.reg-plate-input::placeholder { color: #999; letter-spacing: 3px; }
+
+/* ── Vehicle found card ──────────────────────────────────── */
+.vehicle-found {
+    background: #f0f4fb;
+    border: 1px solid #c5d4ef;
+    border-radius: 6px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.vehicle-found__icon { font-size: 48px; flex-shrink: 0; }
+
+.vehicle-found__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+}
+
+.vehicle-found__meta { font-size: 14px; color: var(--text-light); line-height: 1.6; }
+
+.vehicle-found__reg {
+    display: inline-block;
+    background: #f7bf00;
+    color: #111;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 3px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.button {
+    display: inline-block;
+    padding: 12px 28px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+}
+
+.button--primary {
+    background: var(--orange);
+    color: #fff;
+    border-color: var(--orange);
+}
+
+.button--primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); }
+.button--primary:active { background: var(--orange-dark); }
+
+.button--secondary {
+    background: transparent;
+    color: var(--navy);
+    border-color: var(--navy);
+}
+
+.button--secondary:hover { background: var(--navy); color: #fff; }
+
+.button--back {
+    background: transparent;
+    color: var(--text-light);
+    border-color: transparent;
+    font-weight: 600;
+    text-decoration: underline;
+    padding-left: 0;
+}
+
+.button--back:hover { color: var(--navy); text-decoration: none; }
+
+.button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,61,143,0.3);
+}
+
+.button--large { padding: 14px 40px; font-size: 17px; }
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-top: 20px;
+    margin-top: 8px;
+    border-top: 1px solid var(--border);
+}
+
+/* ── Start my quote CTA (bottom of index) ────────────────── */
+.cta-section {
+    text-align: center;
+    padding: 32px 0 0;
+}
+
+.cta-section p {
+    font-size: 14px;
+    color: var(--text-light);
+    margin: 12px auto 16px;
+    max-width: 480px;
+}
+
+.cta-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.cta-links a {
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* ── Cover type selector ──────────────────────────────────── */
+.cover-options {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+}
+
+.cover-card {
+    flex: 1;
+    min-width: 180px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.15s, background 0.15s;
+    background: var(--white);
+}
+
+.cover-card:hover { border-color: var(--navy-light); }
+
+.cover-card.selected {
+    border-color: var(--navy);
+    border-width: 2px;
+    background: #f0f4fb;
+}
+
+.cover-card__badge {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--orange);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.cover-card__radio {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    accent-color: var(--navy);
+    width: 18px;
+    height: 18px;
+}
+
+.cover-card__title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    padding-right: 26px;
+}
+
+.cover-card__desc { font-size: 13px; color: var(--text-light); line-height: 1.4; }
+
+/* ── Quote result ─────────────────────────────────────────── */
+.quote-hero {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 8px;
+    padding: 36px 32px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.quote-hero__label { font-size: 15px; opacity: 0.85; margin-bottom: 6px; }
+
+.quote-hero__price-monthly {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.quote-hero__price-monthly sup {
+    font-size: 28px;
+    vertical-align: super;
+    font-weight: 400;
+}
+
+.quote-hero__price-annual {
+    font-size: 17px;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+.quote-hero__or { font-size: 13px; opacity: 0.65; margin-bottom: 6px; }
+
+.quote-hero__actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* ── Summary list ────────────────────────────────────────── */
+.summary-list { width: 100%; border-collapse: collapse; }
+
+.summary-list tr { border-bottom: 1px solid var(--border); }
+.summary-list tr:last-child { border-bottom: none; }
+
+.summary-list td { padding: 10px 4px; font-size: 14px; }
+.summary-list td:first-child { color: var(--text-light); font-weight: 400; width: 48%; }
+.summary-list td:last-child  { font-weight: 600; text-align: right; color: var(--navy); }
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer {
+    background: var(--footer-bg);
+    color: #c0c8d8;
+    padding: 20px 24px;
+    margin-top: auto;
+}
+
+.footer__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer__copy {
+    font-size: 13px;
+    color: #c0c8d8;
+}
+
+.footer__copy strong {
+    color: #fff;
+}
+
+.footer__links {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+}
+
+.footer__links a {
+    color: #c0c8d8;
+    text-decoration: underline;
+    font-size: 13px;
+    padding: 0 10px;
+    border-right: 1px solid #4a5878;
+}
+
+.footer__links a:last-child {
+    border-right: none;
+}
+
+.footer__links a:hover { color: #fff; }
+
+/* ── Loading overlay ─────────────────────────────────────── */
+.loading-overlay {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--orange);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 14px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Checkbox ────────────────────────────────────────────── */
+.checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 0;
+}
+
+.checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--navy);
+    cursor: pointer;
+}
+
+.checkbox-row label { font-size: 15px; cursor: pointer; }
+
+/* ── Alert ───────────────────────────────────────────────── */
+.alert {
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.alert--success { background: var(--success-bg); border: 1px solid var(--success); color: var(--success); }
+.alert--error   { background: var(--error-bg);   border: 1px solid var(--error);   color: var(--error); }
+.alert--info    { background: #f0f4fb;  border: 1px solid #c5d4ef; color: var(--navy); }
+
+/* ── Modal overlay (Important Info) ─────────────────────── */
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-backdrop.open { display: flex; }
+
+.modal {
+    background: var(--white);
+    border-radius: 6px;
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.modal__header {
+    background: var(--navy);
+    color: #fff;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal__header h2 { font-size: 20px; font-weight: 700; }
+
+.modal__close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+}
+
+.modal__body {
+    padding: 32px 24px;
+}
+
+.modal__body .modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.modal__section-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.modal__section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+}
+
+.modal__section-subtitle {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 14px 0 6px;
+}
+
+.modal__section-body {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.modal__footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+    .cover-options { flex-direction: column; }
+    .form-row__two-col { grid-template-columns: 1fr; }
+    .step__label { display: none; }
+    .quote-hero__price-monthly { font-size: 48px; }
+    .button-container { flex-direction: column-reverse; align-items: stretch; }
+    .button-container .button { text-align: center; }
+    .footer__inner { flex-direction: column; align-items: flex-start; }
+    .modal__body .modal-grid { grid-template-columns: 1fr; }
+    .page-header__wrapper { flex-wrap: wrap; gap: 12px; }
+}
