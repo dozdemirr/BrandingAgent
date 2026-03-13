@@ -12,7 +12,7 @@ description: Re-brand a wesbite by giving the new designs and legacy code.
 
 When asked to "rebrand my app" you must read the following prompts:
 
-prompt-rebrand-001
+prompt-002-rebrand
 
 Then use the code in the legacy_code folder and the designs in the new_design folder to update the app code to the new design. 
 
