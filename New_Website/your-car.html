@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Car - Swinton Go! Insurance</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-step="2">
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="page-header__wrapper">
+            <a href="index.html" class="page-header__logo">
+                <img src="images/logo.png" alt="Swinton Go! Insurance">
+            </a>
+            <nav class="progress-nav" aria-label="Quote progress">
+                <div class="progress-nav__step" data-step="1">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your details</span>
+                </div>
+                <div class="progress-nav__step" data-step="2">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your car</span>
+                </div>
+                <div class="progress-nav__step" data-step="3">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your cover</span>
+                </div>
+                <div class="progress-nav__step" data-step="4">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Quote</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div class="page-content page-content--narrow">
+
+            <!-- Page heading -->
+            <div class="page-heading">
+                <h1>Your car</h1>
+                <p>Tell us about the vehicle you'd like to insure</p>
+            </div>
+
+            <!-- STAGE A: Registration lookup -->
+            <div id="card-lookup">
+                <h2 class="section-heading">About your car</h2>
+                <p class="section-text">Let's start by telling us about your car</p>
+
+                <div class="form-group form-section">
+                    <label class="form-label" for="reg-input">Enter your registration number</label>
+                    <div class="reg-plate-wrapper" style="margin-bottom:12px;">
+                        <div class="reg-plate-badge">
+                            <span class="eu-stars">★★★</span>
+                            <span>GB</span>
+                        </div>
+                        <input class="reg-plate-input" type="text" id="reg-input" maxlength="8"
+                               placeholder="D500 NLE" autocomplete="off" spellcheck="false">
+                    </div>
+                    <div class="validation-msg" id="err-reg">Please enter a valid UK registration number</div>
+                </div>
+
+                <div id="lookup-spinner" style="display:none;" aria-live="polite">
+                    <div class="loading-overlay">
+                        <div class="spinner"></div>
+                        <p style="color:var(--text-muted);font-size:15px;">Looking up your vehicle&hellip;</p>
+                    </div>
+                </div>
+
+                <div class="info-box" id="lookup-info">
+                    <span>ℹ️</span>
+                    <span>Enter the registration as shown on the vehicle. We use this to retrieve details from the DVLA register.</span>
+                </div>
+
+                <div class="btn-row" style="border-top:none;padding-top:8px;">
+                    <a href="index.html" class="btn btn--back">← Back</a>
+                    <button class="btn btn--primary" id="btn-find-car">Find your car</button>
+                </div>
+            </div>
+
+            <!-- STAGE B: Vehicle confirmed -->
+            <div id="card-vehicle-found" style="display:none;">
+                <h2 class="section-heading">We found your car</h2>
+                <p class="section-text">Please confirm this is the vehicle you want to insure</p>
+
+                <div class="vehicle-found">
+                    <div class="vehicle-found__icon">🚗</div>
+                    <div>
+                        <div class="vehicle-found__title" id="veh-title"></div>
+                        <div class="vehicle-found__meta" id="veh-meta"></div>
+                        <div class="vehicle-found__reg" id="veh-reg"></div>
+                    </div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label">Is this your car?</label>
+                    <div class="radio-pills">
+                        <div class="radio-pill"><input type="radio" name="veh-confirm" id="veh-yes" value="yes"><label for="veh-yes">Yes</label></div>
+                        <div class="radio-pill"><input type="radio" name="veh-confirm" id="veh-no" value="no"><label for="veh-no">No</label></div>
+                    </div>
+                    <div class="validation-msg" id="err-veh-confirm">Please confirm whether this is your vehicle</div>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn--back" id="btn-search-again">← Search again</button>
+                    <button class="btn btn--primary" id="btn-confirm-vehicle">Continue</button>
+                </div>
+            </div>
+
+            <!-- STAGE C: Car + driving questions -->
+            <div id="card-questions" style="display:none;">
+
+                <!-- About your car -->
+                <h2 class="section-heading">About your car</h2>
+
+                <div class="form-group form-section">
+                    <label class="form-label" for="purchase-date">When did you buy it?</label>
+                    <div style="font-size:13px;color:var(--text-muted);margin-bottom:6px;">MM/YYYY</div>
+                    <input class="form-control form-control--date" type="text" id="purchase-date"
+                           placeholder="06/2022" maxlength="7" autocomplete="off">
+                    <div class="validation-msg" id="err-purchase-date">Please enter a valid date (MM/YYYY)</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label">Are you the registered keeper?</label>
+                    <div class="radio-pills">
+                        <div class="radio-pill"><input type="radio" name="reg-keeper" id="keeper-yes" value="yes"><label for="keeper-yes">Yes</label></div>
+                        <div class="radio-pill"><input type="radio" name="reg-keeper" id="keeper-no" value="no"><label for="keeper-no">No</label></div>
+                    </div>
+                    <div class="validation-msg" id="err-reg-keeper">Please select an option</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label" for="car-owner">Who owns the car?</label>
+                    <select class="form-control form-control--short" id="car-owner">
+                        <option value="">Please select</option>
+                        <option value="proposer">You (the proposer)</option>
+                        <option value="spouse">Spouse / partner</option>
+                        <option value="company">Company</option>
+                        <option value="finance">On finance</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="validation-msg" id="err-car-owner">Please select who owns the car</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label">What is the car used for?</label>
+                    <div class="radio-pills" style="flex-direction:column;align-items:flex-start;">
+                        <div class="radio-pill"><input type="radio" name="car-use" id="use-social" value="social"><label for="use-social">Social only</label></div>
+                        <div class="radio-pill"><input type="radio" name="car-use" id="use-commuting" value="commuting"><label for="use-commuting">Social and commuting</label></div>
+                        <div class="radio-pill"><input type="radio" name="car-use" id="use-business" value="business"><label for="use-business">Social, commuting and business</label></div>
+                    </div>
+                    <div class="validation-msg" id="err-car-use">Please select how the car is used</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label" for="annual-mileage">Estimated annual mileage</label>
+                    <select class="form-control form-control--short" id="annual-mileage">
+                        <option value="">Please select</option>
+                        <option value="1000">Up to 1,000</option>
+                        <option value="2000">1,001 - 2,000</option>
+                        <option value="3000">2,001 - 3,000</option>
+                        <option value="4000">3,001 - 4,000</option>
+                        <option value="5000">4,001 - 5,000</option>
+                        <option value="6000">5,001 - 6,000</option>
+                        <option value="7000">6,001 - 7,000</option>
+                        <option value="8000">7,001 - 8,000</option>
+                        <option value="9000">8,001 - 9,000</option>
+                        <option value="10000">9,001 - 10,000</option>
+                        <option value="12000">10,001 - 12,000</option>
+                        <option value="15000">12,001 - 15,000</option>
+                        <option value="20000">15,001 - 20,000</option>
+                        <option value="25000">20,001 - 25,000</option>
+                        <option value="30000">25,001 - 30,000</option>
+                        <option value="50000">30,001 - 50,000</option>
+                        <option value="50001">50,000+</option>
+                    </select>
+                    <div class="validation-msg" id="err-annual-mileage">Please select your estimated annual mileage</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label" for="overnight-parking">Where is the car kept overnight?</label>
+                    <select class="form-control form-control--short" id="overnight-parking">
+                        <option value="">Please select</option>
+                        <option value="garage">Locked garage</option>
+                        <option value="driveway">Driveway at home</option>
+                        <option value="street">Street near home</option>
+                        <option value="carpark">Car park</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="validation-msg" id="err-overnight-parking">Please select where your car is kept overnight</div>
+                </div>
+
+                <div class="form-group form-section" style="margin-bottom:36px;">
+                    <label class="form-label">Has the car been modified from standard?</label>
+                    <div class="radio-pills">
+                        <div class="radio-pill"><input type="radio" name="modifications" id="mod-yes" value="yes"><label for="mod-yes">Yes</label></div>
+                        <div class="radio-pill"><input type="radio" name="modifications" id="mod-no" value="no"><label for="mod-no">No</label></div>
+                    </div>
+                    <div class="validation-msg" id="err-modifications">Please select an option</div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Your driving history -->
+                <h2 class="section-heading">Your driving history</h2>
+
+                <div class="form-group form-section">
+                    <label class="form-label">What type of driving licence do you hold?</label>
+                    <div class="radio-pills" style="flex-direction:column;align-items:flex-start;">
+                        <div class="radio-pill"><input type="radio" name="licence-type" id="lic-full-uk" value="full-uk"><label for="lic-full-uk">Full UK licence</label></div>
+                        <div class="radio-pill"><input type="radio" name="licence-type" id="lic-prov-uk" value="prov-uk"><label for="lic-prov-uk">Provisional UK licence</label></div>
+                        <div class="radio-pill"><input type="radio" name="licence-type" id="lic-eu" value="eu"><label for="lic-eu">European Union licence</label></div>
+                        <div class="radio-pill"><input type="radio" name="licence-type" id="lic-intl" value="intl"><label for="lic-intl">International licence</label></div>
+                    </div>
+                    <div class="validation-msg" id="err-licence-type">Please select your licence type</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label" for="licence-years">How many years have you held your licence?</label>
+                    <select class="form-control form-control--short" id="licence-years"></select>
+                    <div class="validation-msg" id="err-licence-years">Please select how long you have held your licence</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label" for="ncb-years">How many years No Claims Bonus (NCB) do you have?</label>
+                    <select class="form-control form-control--short" id="ncb-years"></select>
+                    <div class="validation-msg" id="err-ncb-years">Please select your NCB years</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label">Have you had any claims in the last 5 years?</label>
+                    <div class="radio-pills">
+                        <div class="radio-pill"><input type="radio" name="has-claims" id="claims-yes" value="yes"><label for="claims-yes">Yes</label></div>
+                        <div class="radio-pill"><input type="radio" name="has-claims" id="claims-no" value="no"><label for="claims-no">No</label></div>
+                    </div>
+                    <div class="validation-msg" id="err-has-claims">Please select an option</div>
+                </div>
+
+                <div class="form-group form-section" id="claims-count-row" style="display:none;">
+                    <label class="form-label" for="claims-count">How many claims?</label>
+                    <select class="form-control form-control--short" id="claims-count">
+                        <option value="">Please select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4 or more</option>
+                    </select>
+                    <div class="validation-msg" id="err-claims-count">Please select the number of claims</div>
+                </div>
+
+                <div class="form-group form-section">
+                    <label class="form-label">Have you had any motoring convictions in the last 5 years?</label>
+                    <div class="radio-pills">
+                        <div class="radio-pill"><input type="radio" name="has-convictions" id="conv-yes" value="yes"><label for="conv-yes">Yes</label></div>
+                        <div class="radio-pill"><input type="radio" name="has-convictions" id="conv-no" value="no"><label for="conv-no">No</label></div>
+                    </div>
+                    <div class="validation-msg" id="err-has-convictions">Please select an option</div>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn--back" id="btn-back-car">← Back</button>
+                    <button class="btn btn--primary" id="btn-continue-car">Continue to Your Cover →</button>
+                </div>
+
+            </div><!-- /card-questions -->
+
+        </div><!-- /page-content -->
+    </main>
+
+    <!-- Trust strip -->
+    <div class="trust-strip">
+        <div class="trust-strip__inner">
+            <div class="trust-item"><span class="trust-item__icon">✓</span> FCA Authorised &amp; Regulated</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> No hidden fees</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> RAC Breakdown included</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> UK-based claims team, 24/7</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer__inner">
+            <div class="footer__copy">
+                &copy; <span id="footer-year"></span> <strong>Swinton Go!</strong> All rights reserved
+            </div>
+            <div class="footer__links">
+                <a href="#">Important info</a>
+                <span>/</span>
+                <a href="#">Privacy policy</a>
+                <span>/</span>
+                <a href="#">Cookie policy</a>
+                <span>/</span>
+                <a href="#">Contact us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+    (function () {
+
+        /* Populate licence-years select */
+        (function buildLicenceYears() {
+            var sel = document.getElementById('licence-years');
+            var opt0 = document.createElement('option');
+            opt0.value = ''; opt0.textContent = 'Please select'; sel.appendChild(opt0);
+            var opt1 = document.createElement('option');
+            opt1.value = '0'; opt1.textContent = 'Less than 1 year'; sel.appendChild(opt1);
+            for (var i = 1; i <= 19; i++) {
+                var o = document.createElement('option');
+                o.value = String(i); o.textContent = i + ' year' + (i === 1 ? '' : 's'); sel.appendChild(o);
+            }
+            var oMax = document.createElement('option');
+            oMax.value = '20'; oMax.textContent = '20 or more years'; sel.appendChild(oMax);
+        }());
+
+        /* Populate ncb-years select */
+        (function buildNcbYears() {
+            var sel = document.getElementById('ncb-years');
+            var opt0 = document.createElement('option');
+            opt0.value = ''; opt0.textContent = 'Please select'; sel.appendChild(opt0);
+            for (var i = 0; i <= 8; i++) {
+                var o = document.createElement('option');
+                o.value = String(i); o.textContent = i + ' year' + (i === 1 ? '' : 's'); sel.appendChild(o);
+            }
+            var oMax = document.createElement('option');
+            oMax.value = '9'; oMax.textContent = '9 or more years'; sel.appendChild(oMax);
+        }());
+
+        function vis(id, show) { var e = document.getElementById(id); if (e) e.style.display = show ? '' : 'none'; }
+        function markErr(id)   { var e = document.getElementById(id); if (e) e.classList.add('visible'); }
+        function dropErr(id)   { var e = document.getElementById(id); if (e) e.classList.remove('visible'); }
+        function picked(nm)    { var e = document.querySelector('input[name="' + nm + '"]:checked'); return e ? e.value : null; }
+
+        /* Restore reg from store */
+        var prior = Store.get('registration');
+        if (prior) document.getElementById('reg-input').value = prior;
+
+        /* Purchase-date auto-format MM/YYYY */
+        document.getElementById('purchase-date').addEventListener('input', function () {
+            var v = this.value.replace(/\D/g, '');
+            if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2, 6);
+            this.value = v;
+        });
+
+        /* ---- Stage A: Find car ---- */
+        document.getElementById('btn-find-car').addEventListener('click', function () {
+            var inp = document.getElementById('reg-input');
+            var raw = inp.value.trim();
+            var key = raw.replace(/\s+/g, '').toUpperCase();
+            if (key.length < 1 || key.length > 7) {
+                inp.classList.add('form-control--error'); markErr('err-reg'); return;
+            }
+            inp.classList.remove('form-control--error'); dropErr('err-reg');
+
+            var btn = this; btn.disabled = true;
+            vis('lookup-info', false); vis('lookup-spinner', true);
+
+            /* Stubbed DVLA lookup – returns dummy data after delay */
+            setTimeout(function () {
+                vis('lookup-spinner', false); vis('lookup-info', true); btn.disabled = false;
+                var fallback = {
+                    make:'Volkswagen', model:'Golf', variant:'1.5 TSI SE 5dr',
+                    year:2019, cc:1498, fuelType:'Petrol', transmission:'Manual', doors:5, bodyType:'Hatchback'
+                };
+                var veh = lookupVehicle(key) || fallback;
+                Store.set('registration', raw);
+                Store.set('vehicle', veh);
+                document.getElementById('veh-title').textContent = veh.year + ' ' + veh.make + ' ' + veh.model;
+                document.getElementById('veh-meta').innerHTML =
+                    veh.variant + '<br>' + veh.cc + 'cc &bull; ' + veh.fuelType +
+                    ' &bull; ' + veh.transmission + ' &bull; ' + veh.doors + ' doors';
+                document.getElementById('veh-reg').textContent = raw.toUpperCase();
+                vis('card-lookup', false); vis('card-vehicle-found', true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 1100);
+        });
+
+        /* ---- Stage B: Confirm vehicle ---- */
+        document.getElementById('btn-search-again').addEventListener('click', function () {
+            [].forEach.call(document.querySelectorAll('input[name="veh-confirm"]'), function (r) { r.checked = false; });
+            dropErr('err-veh-confirm');
+            vis('card-vehicle-found', false); vis('card-lookup', true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.getElementById('btn-confirm-vehicle').addEventListener('click', function () {
+            var ans = picked('veh-confirm');
+            if (!ans) { markErr('err-veh-confirm'); return; }
+            dropErr('err-veh-confirm');
+            if (ans === 'no') {
+                [].forEach.call(document.querySelectorAll('input[name="veh-confirm"]'), function (r) { r.checked = false; });
+                document.getElementById('reg-input').value = '';
+                vis('card-vehicle-found', false); vis('card-lookup', true);
+                window.scrollTo({ top: 0, behavior: 'smooth' }); return;
+            }
+            vis('card-vehicle-found', false); vis('card-questions', true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        /* ---- Claims toggle ---- */
+        [].forEach.call(document.querySelectorAll('input[name="has-claims"]'), function (r) {
+            r.addEventListener('change', function () {
+                var row = document.getElementById('claims-count-row');
+                if (this.value === 'yes') {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                    document.getElementById('claims-count').value = '';
+                    dropErr('err-claims-count');
+                }
+            });
+        });
+
+        /* ---- Back from questions ---- */
+        document.getElementById('btn-back-car').addEventListener('click', function () {
+            vis('card-questions', false); vis('card-vehicle-found', true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        /* ---- Continue to Your Cover ---- */
+        document.getElementById('btn-continue-car').addEventListener('click', function () {
+            var ok = true;
+
+            function requireSel(selId, errId) {
+                var el = document.getElementById(selId);
+                if (!el.value) { el.classList.add('form-control--error'); markErr(errId); ok = false; }
+                else { el.classList.remove('form-control--error'); dropErr(errId); }
+                return el;
+            }
+            function requireRadio(radioName, errId) {
+                var chosen = picked(radioName);
+                if (!chosen) { markErr(errId); ok = false; return false; }
+                dropErr(errId); return true;
+            }
+
+            var pdEl  = document.getElementById('purchase-date');
+            var pdHit = pdEl.value.match(/^(\d{2})\/(\d{4})$/);
+            var nowYr = new Date().getFullYear();
+            if (!pdHit || +pdHit[1] < 1 || +pdHit[1] > 12 || +pdHit[2] < 1900 || +pdHit[2] > nowYr) {
+                pdEl.classList.add('form-control--error'); markErr('err-purchase-date'); ok = false;
+            } else { pdEl.classList.remove('form-control--error'); dropErr('err-purchase-date'); }
+
+            requireRadio('reg-keeper',     'err-reg-keeper');
+            var coEl  = requireSel('car-owner',         'err-car-owner');
+            requireRadio('car-use',        'err-car-use');
+            var amEl  = requireSel('annual-mileage',    'err-annual-mileage');
+            var opEl  = requireSel('overnight-parking', 'err-overnight-parking');
+            requireRadio('modifications',  'err-modifications');
+            requireRadio('licence-type',   'err-licence-type');
+            var lyEl  = requireSel('licence-years', 'err-licence-years');
+            var ncbEl = requireSel('ncb-years',     'err-ncb-years');
+
+            var hasClaims = picked('has-claims');
+            if (!hasClaims) { markErr('err-has-claims'); ok = false; } else { dropErr('err-has-claims'); }
+            var ccEl = document.getElementById('claims-count');
+            if (hasClaims === 'yes' && !ccEl.value) {
+                ccEl.classList.add('form-control--error'); markErr('err-claims-count'); ok = false;
+            } else { ccEl.classList.remove('form-control--error'); dropErr('err-claims-count'); }
+
+            requireRadio('has-convictions', 'err-has-convictions');
+
+            if (!ok) {
+                var fe = document.querySelector('#card-questions .validation-msg.visible');
+                if (fe && fe.closest) fe.closest('.form-group').scrollIntoView({ behavior:'smooth', block:'center' });
+                return;
+            }
+
+            Store.set('purchaseDate',     pdEl.value);
+            Store.set('registeredKeeper', picked('reg-keeper'));
+            Store.set('carOwner',         coEl.value);
+            Store.set('carUse',           picked('car-use'));
+            Store.set('annualMileage',    amEl.value);
+            Store.set('overnightParking', opEl.value);
+            Store.set('modifications',    picked('modifications'));
+            Store.set('licenceType',      picked('licence-type'));
+            Store.set('licenceYears',     lyEl.value);
+            Store.set('ncbYears',         ncbEl.value);
+            Store.set('claimsCount',      hasClaims === 'yes' ? parseInt(ccEl.value, 10) : 0);
+            Store.set('convictionsCount', picked('has-convictions') === 'yes' ? 1 : 0);
+            window.location.href = 'your-cover.html';
+        });
+
+    }());
+    </script>
+</body>
+</html>

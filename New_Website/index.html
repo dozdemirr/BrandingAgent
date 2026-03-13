@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Details - Swinton Go! Insurance</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-step="1">
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="page-header__wrapper">
+            <a href="index.html" class="page-header__logo">
+                <img src="images/logo.png" alt="Swinton Go! Insurance">
+            </a>
+            <nav class="progress-nav" aria-label="Quote progress">
+                <div class="progress-nav__step" data-step="1">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your details</span>
+                </div>
+                <div class="progress-nav__step" data-step="2">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your car</span>
+                </div>
+                <div class="progress-nav__step" data-step="3">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your cover</span>
+                </div>
+                <div class="progress-nav__step" data-step="4">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Quote</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div class="page-content">
+
+            <!-- Page heading -->
+            <div class="page-heading">
+                <h1>Welcome to Swinton Go!</h1>
+                <p>We'll search our panel of car insurers to find a great policy for you</p>
+            </div>
+
+            <!-- Two-column layout -->
+            <div class="two-col two-col--main">
+
+                <!-- LEFT: Form -->
+                <div>
+
+                    <!-- Before you begin -->
+                    <div style="margin-bottom: 36px;">
+                        <h2 class="section-heading">Before you begin</h2>
+                        <p class="section-text">
+                            Swinton Go! Insurance is arranged and administered by BISL Limited,
+                            an insurance intermediary. References to 'We', 'Us' and 'Our' mean
+                            BISL Limited. Any information you give to us will only be used to
+                            provide you with a Swinton Go! Insurance quote and/or policy.
+                        </p>
+                        <p class="section-text">
+                            It is important that the information you provide throughout the quote
+                            and duration of the policy is accurate.
+                        </p>
+                        <div class="info-notice">
+                            <span class="info-notice__icon">ⓘ</span>
+                            <span>Failure to disclose correct and complete information to the best
+                            of your knowledge may result in increased premiums, refusal of a claim
+                            or not being fully paid, your policy being cancelled or being made null
+                            &amp; void and treated as if it never existed</span>
+                        </div>
+                    </div>
+
+                    <!-- Tell us about yourself -->
+                    <div>
+                        <h2 class="section-heading">Tell us about yourself</h2>
+
+                        <!-- Title -->
+                        <div class="form-group form-section">
+                            <label class="form-label">Title</label>
+                            <div class="title-selector" id="title-selector">
+                                <div class="title-btn"><input type="radio" name="title" id="title-mr"   value="MR"><label for="title-mr">Mr</label></div>
+                                <div class="title-btn"><input type="radio" name="title" id="title-mrs"  value="MRS"><label for="title-mrs">Mrs</label></div>
+                                <div class="title-btn"><input type="radio" name="title" id="title-ms"   value="MS"><label for="title-ms">Ms</label></div>
+                                <div class="title-btn"><input type="radio" name="title" id="title-miss" value="MISS"><label for="title-miss">Miss</label></div>
+                                <div class="title-btn"><input type="radio" name="title" id="title-mx"   value="MX"><label for="title-mx">Mx</label></div>
+                                <div class="title-btn"><input type="radio" name="title" id="title-dr"   value="DR"><label for="title-dr">Dr</label></div>
+                            </div>
+                            <div class="validation-msg" id="err-title">Please select a title</div>
+                        </div>
+
+                        <!-- First name -->
+                        <div class="form-group form-section">
+                            <label class="form-label" for="firstName">First name</label>
+                            <input class="form-control" type="text" id="firstName" name="firstName"
+                                   autocomplete="given-name" maxlength="20" placeholder="placeholder">
+                            <div class="validation-msg" id="err-firstName">Please enter your first name</div>
+                        </div>
+
+                        <!-- Surname -->
+                        <div class="form-group form-section">
+                            <label class="form-label" for="lastName">Surname</label>
+                            <input class="form-control" type="text" id="lastName" name="lastName"
+                                   autocomplete="family-name" maxlength="20" placeholder="placeholder">
+                            <div class="validation-msg" id="err-lastName">Please enter your surname</div>
+                        </div>
+
+                        <!-- Date of birth -->
+                        <div class="form-group form-section">
+                            <label class="form-label" for="dob">Date of birth</label>
+                            <input class="form-control form-control--date" type="text" id="dob" name="dob"
+                                   placeholder="dd/mm/yyyy" maxlength="10" autocomplete="bday">
+                            <div class="validation-msg" id="err-dob">Please enter a valid date of birth (DD/MM/YYYY)</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom CTA -->
+                    <div class="form-cta">
+                        <button class="btn btn--primary btn--large" id="btn-start-quote">
+                            Start my quote
+                        </button>
+                        <div class="form-cta__terms">
+                            Choosing to continue by selecting 'Start my quote', you are
+                            confirming that you have read and agreed to our:<br>
+                            <a href="#">Terms and conditions</a> &nbsp;
+                            <a href="#">Quote acceptance information</a>
+                        </div>
+                    </div>
+
+                </div><!-- /LEFT -->
+
+                <!-- RIGHT: Info panel -->
+                <div class="info-panel">
+
+                    <div class="info-panel__section">
+                        <h3>How we use your data</h3>
+                        <p>We will use your data for the purposes of providing your
+                        quote which may include:</p>
+                        <ul>
+                            <li>Sharing your data with our insurers.</li>
+                            <li>Using your data for fraud prevention and to verify the
+                            information you provide to us.</li>
+                            <li>Checks with external databases such as credit reference
+                            agencies and publicly available sources of information as part
+                            of this process. Any credit searches will appear on your credit
+                            report but will not be visible to other lenders, unless you take
+                            out a policy and choose to pay by monthly instalments.</li>
+                        </ul>
+                        <p style="margin-top:10px;">
+                            If you have previously held a product with BISL Limited or obtained a
+                            quote in the past, we may carry out checks against the data we already
+                            hold on you.
+                        </p>
+                        <p style="margin-top:10px;">
+                            Our <a href="#">Privacy Policy</a> provides more details of how your
+                            data is used, the legal basis that we rely on to process it and gives
+                            you information on the rights you have over your data, and how to
+                            exercise them.
+                        </p>
+                    </div>
+
+                </div><!-- /RIGHT -->
+
+            </div><!-- /two-col -->
+
+        </div><!-- /page-content -->
+    </main>
+
+    <!-- Trust strip -->
+    <div class="trust-strip">
+        <div class="trust-strip__inner">
+            <div class="trust-item"><span class="trust-item__icon">✓</span> FCA Authorised &amp; Regulated</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> No hidden fees</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> RAC Breakdown included</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> UK-based claims team, 24/7</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer__inner">
+            <div class="footer__copy">
+                &copy; <span id="footer-year"></span> <strong>Swinton Go!</strong> All rights reserved
+            </div>
+            <div class="footer__links">
+                <a href="#">Important info</a>
+                <span>/</span>
+                <a href="#">Privacy policy</a>
+                <span>/</span>
+                <a href="#">Cookie policy</a>
+                <span>/</span>
+                <a href="#">Contact us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+    (function () {
+        // Auto-format DOB as DD/MM/YYYY
+        const dobInput = document.getElementById('dob');
+        dobInput.addEventListener('input', function () {
+            let v = this.value.replace(/\D/g, '');
+            if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2);
+            if (v.length > 5) v = v.slice(0, 5) + '/' + v.slice(5, 9);
+            this.value = v;
+        });
+
+        function parseDOB(str) {
+            const m = str.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+            if (!m) return null;
+            const d = new Date(+m[3], +m[2] - 1, +m[1]);
+            if (d.getDate() !== +m[1] || d.getMonth() !== +m[2] - 1) return null;
+            return d;
+        }
+
+        function showErr(id, msg) {
+            const el = document.getElementById(id);
+            if (el) { if (msg) el.textContent = msg; el.classList.add('visible'); }
+        }
+        function clearErr(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('visible');
+        }
+
+        document.getElementById('btn-start-quote').addEventListener('click', function () {
+            let valid = true;
+
+            // Title
+            const titleVal = document.querySelector('input[name="title"]:checked');
+            if (!titleVal) { showErr('err-title'); valid = false; }
+            else clearErr('err-title');
+
+            // First name
+            const fn = document.getElementById('firstName');
+            if (!fn.value.trim() || fn.value.trim().length < 2) {
+                fn.classList.add('form-control--error'); showErr('err-firstName'); valid = false;
+            } else { fn.classList.remove('form-control--error'); clearErr('err-firstName'); }
+
+            // Last name
+            const ln = document.getElementById('lastName');
+            if (!ln.value.trim() || ln.value.trim().length < 2) {
+                ln.classList.add('form-control--error'); showErr('err-lastName'); valid = false;
+            } else { ln.classList.remove('form-control--error'); clearErr('err-lastName'); }
+
+            // DOB
+            const dob     = document.getElementById('dob');
+            const dobDate = parseDOB(dob.value);
+            const today   = new Date();
+            const minAge  = new Date(today.getFullYear() - 17, today.getMonth(), today.getDate());
+            const maxAge  = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+            if (!dobDate || dobDate > minAge || dobDate < maxAge) {
+                dob.classList.add('form-control--error'); showErr('err-dob'); valid = false;
+            } else { dob.classList.remove('form-control--error'); clearErr('err-dob'); }
+
+            if (!valid) {
+                document.querySelector('.validation-msg.visible')
+                    ?.closest('.form-group')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            Store.clear();
+            Store.set('title', titleVal.value);
+            Store.set('firstName', fn.value.trim());
+            Store.set('lastName', ln.value.trim());
+            Store.set('dob', dob.value);
+
+            window.location.href = 'your-car.html';
+        });
+
+        // Enter key on last input
+        document.getElementById('dob').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') document.getElementById('btn-start-quote').click();
+        });
+    })();
+    </script>
+</body>
+</html>
