@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About You - Swinton Go! Insurance</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-step="1">
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="page-header__wrapper">
+            <a href="index.html" class="page-header__logo" aria-label="Swinton Go! Insurance - Home">
+                <img src="images/logo.png" alt="Swinton Go! Insurance">
+            </a>
+        </div>
+    </header>
+
+    <!-- Progress bar -->
+    <nav class="progress-bar" aria-label="Quote progress">
+        <div class="progress-bar__inner">
+            <div class="progress-bar__track"></div>
+            <div class="step step--active" data-step="1">
+                <div class="step__dot"></div>
+                <span class="step__label">Your details</span>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step__dot"></div>
+                <span class="step__label">Your car</span>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step__dot"></div>
+                <span class="step__label">Your cover</span>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step__dot"></div>
+                <span class="step__label">Quote</span>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <div class="page-section page-section--narrow">
+
+            <div class="card">
+                <span class="sub-step-label">About you</span>
+                <h2 class="card__title" style="border-bottom:none;padding-bottom:0;">What's your marital status?</h2>
+                <p class="card__subtitle">Select the option that best describes your current status.</p>
+
+                <div class="form-row" style="border-bottom:none;padding-bottom:0;">
+                    <div class="sel-buttons sel-buttons--full" id="marital-pills">
+                        <div class="sel-btn">
+                            <input type="radio" name="marital-status" id="ms-married" value="Married">
+                            <label for="ms-married">Married</label>
+                        </div>
+                        <div class="sel-btn">
+                            <input type="radio" name="marital-status" id="ms-single" value="Single">
+                            <label for="ms-single">Single</label>
+                        </div>
+                        <div class="sel-btn">
+                            <input type="radio" name="marital-status" id="ms-cohabiting" value="Cohabiting/Partnered">
+                            <label for="ms-cohabiting">Cohabiting / Partnered</label>
+                        </div>
+                        <div class="sel-btn">
+                            <input type="radio" name="marital-status" id="ms-divorced" value="Divorced/Dissolved">
+                            <label for="ms-divorced">Divorced / Dissolved</label>
+                        </div>
+                        <div class="sel-btn">
+                            <input type="radio" name="marital-status" id="ms-separated" value="Separated">
+                            <label for="ms-separated">Separated</label>
+                        </div>
+                        <div class="sel-btn">
+                            <input type="radio" name="marital-status" id="ms-widowed" value="Widowed/Surviving Civil Partner">
+                            <label for="ms-widowed">Widowed / Surviving Civil Partner</label>
+                        </div>
+                        <div class="sel-btn">
+                            <input type="radio" name="marital-status" id="ms-civil" value="Civil Partnership">
+                            <label for="ms-civil">Civil Partnership</label>
+                        </div>
+                    </div>
+                    <div class="form-row__validation-text" id="err-marital" style="margin-top:12px;">Please select your marital status</div>
+                </div>
+
+                <div style="padding-top:20px;text-align:center;">
+                    <a href="index.html" class="button button--back">&larr; Back</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Trust strip -->
+    <div class="trust-strip">
+        <div class="trust-strip__inner">
+            <div class="trust-item"><span class="trust-item__icon">✓</span> FCA Authorised &amp; Regulated</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> No hidden fees</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> UK-based claims team, 24/7</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> Secure &amp; encrypted</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer__inner">
+            <div class="footer__copy">
+                <p>&copy; 2026 Swinton Go! All rights reserved.</p>
+                <p style="margin-top:4px;">Swinton Go! Insurance is arranged and administered by BISL Limited.</p>
+            </div>
+            <ul class="footer__links">
+                <li><a href="#">Important info</a></li>
+                <li><a href="#">Privacy policy</a></li>
+                <li><a href="#">Cookie policy</a></li>
+                <li><a href="#">Contact us</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+    (function () {
+
+        // Guard – redirect if no personal data
+        if (!Store.get('firstName')) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        // Auto-proceed on selection
+        var radios = document.querySelectorAll('input[name="marital-status"]');
+        radios.forEach(function (r) {
+            r.addEventListener('change', function () {
+                document.getElementById('err-marital').classList.remove('visible');
+                Store.set('maritalStatus', this.value);
+                // Small delay so user sees the selection highlighted before navigating
+                setTimeout(function () {
+                    window.location.href = 'your-car.html';
+                }, 250);
+            });
+        });
+
+    }());
+    </script>
+</body>
+</html>

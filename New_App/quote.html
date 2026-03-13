@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Quote - Swinton Go! Insurance</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-step="4">
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="page-header__wrapper">
+            <a href="index.html" class="page-header__logo" aria-label="Swinton Go! Insurance - Home">
+                <img src="images/logo.png" alt="Swinton Go! Insurance">
+            </a>
+        </div>
+    </header>
+
+    <!-- Progress bar -->
+    <nav class="progress-bar" aria-label="Quote progress">
+        <div class="progress-bar__inner">
+            <div class="progress-bar__track"></div>
+            <div class="step step--done" data-step="1">
+                <div class="step__dot">&#10003;</div>
+                <span class="step__label">Your details</span>
+            </div>
+            <div class="step step--done" data-step="2">
+                <div class="step__dot">&#10003;</div>
+                <span class="step__label">Your car</span>
+            </div>
+            <div class="step step--done" data-step="3">
+                <div class="step__dot">&#10003;</div>
+                <span class="step__label">Your cover</span>
+            </div>
+            <div class="step step--active" data-step="4">
+                <div class="step__dot"></div>
+                <span class="step__label">Quote</span>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <div class="page-section" id="quote-output">
+            <div style="text-align:center;padding:48px 20px;">
+                <div class="spinner" style="margin:0 auto 16px;"></div>
+                <p style="color:var(--text-light);font-size:15px;">Calculating your quote&hellip;</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Trust strip -->
+    <div class="trust-strip">
+        <div class="trust-strip__inner">
+            <div class="trust-item"><span class="trust-item__icon">✓</span> FCA Authorised &amp; Regulated</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> No hidden fees</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> UK-based claims team, 24/7</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> Secure &amp; encrypted</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer__inner">
+            <div class="footer__copy">
+                <p>&copy; 2026 Swinton Go! All rights reserved.</p>
+                <p style="margin-top:4px;">Swinton Go! Insurance is arranged and administered by BISL Limited.</p>
+            </div>
+            <ul class="footer__links">
+                <li><a href="#">Important info</a></li>
+                <li><a href="#">Privacy policy</a></li>
+                <li><a href="#">Cookie policy</a></li>
+                <li><a href="#">Contact us</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        /* Retrieve all store values */
+        var data = {
+            title:            Store.get('title')           || '',
+            firstName:        Store.get('firstName')       || '',
+            lastName:         Store.get('lastName')        || '',
+            dob:              Store.get('dob')             || '',
+            maritalStatus:    Store.get('maritalStatus')   || '',
+            registration:     Store.get('registration')    || '',
+            vehicle:          Store.get('vehicle')         || {},
+            purchaseDate:     Store.get('purchaseDate')    || '',
+            carOwner:         Store.get('carOwner')        || '',
+            carUse:           Store.get('carUse')          || '',
+            annualMileage:    Store.get('annualMileage')   || '0',
+            overnightParking: Store.get('overnightParking') || '',
+            modifications:    Store.get('modifications')   || 'no',
+            licenceType:      Store.get('licenceType')     || 'full-uk',
+            licenceYears:     Store.get('licenceYears')    || '0',
+            ncbYears:         Store.get('ncbYears')        || '0',
+            claimsCount:      Store.get('claimsCount')     || 0,
+            convictionsCount: Store.get('convictionsCount') || 0,
+            coverType:        Store.get('coverType')       || 'comprehensive',
+            startDate:        Store.get('startDate')       || '',
+            voluntaryExcess:  Store.get('voluntaryExcess') || '250',
+            paymentMethod:    Store.get('paymentMethod')   || 'monthly'
+        };
+
+        /* Parse stored DOB (DD/MM/YYYY) into a Date for calculateQuote */
+        var storedDob = Store.get('dob') || '';
+        if (data.dob) {
+            var parts = data.dob.split('/');
+            if (parts.length === 3) {
+                data.dob = new Date(+parts[2], +parts[1] - 1, +parts[0]).toISOString();
+            }
+        }
+
+        var prices = calculateQuote(data);
+
+        /* --- Helper label formatters --- */
+        function fmtCoverType(v) {
+            return { tpo: 'Third Party Only', tpft: 'Third Party Fire & Theft', comprehensive: 'Comprehensive' }[v] || v;
+        }
+        function fmtDate(isoStr) {
+            var d = new Date(isoStr + 'T00:00:00');
+            return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+        function fmtMileage(v) {
+            var n = parseInt(v, 10);
+            if (n >= 50001) return '50,000+ miles';
+            return n.toLocaleString('en-GB') + ' miles';
+        }
+        function fmtParking(v) {
+            return { garage:'Locked garage', driveway:'Driveway at home', street:'Street near home', carpark:'Car park', other:'Other' }[v] || v;
+        }
+        function fmtLicence(v) {
+            return { 'full-uk':'Full UK licence', 'prov-uk':'Provisional UK licence', eu:'European Union licence', intl:'International licence' }[v] || v;
+        }
+        function fmtTitle(v) {
+            var t = { MR:'Mr', MRS:'Mrs', MS:'Ms', MISS:'Miss', MX:'Mx', DR:'Dr' };
+            return t[v] || v;
+        }
+        function fmtExcess(v) { return '&pound;' + parseInt(v, 10).toLocaleString('en-GB'); }
+
+        var veh = data.vehicle;
+        var vehLabel = veh ? (veh.make + ' ' + veh.model + (veh.variant ? ' ' + veh.variant : '')) : '&mdash;';
+        var regRef = 'SGQ-' + Math.floor(10000000 + Math.random() * 90000000);
+        var coverLabel = fmtCoverType(data.coverType);
+
+        var monthlyFmt = prices.monthly.toFixed(2);
+        var annualFmt  = prices.annual.toLocaleString('en-GB');
+
+        /* --- Build the output HTML --- */
+        var html = '';
+
+        /* Quote heading */
+        html += '<div style="text-align:center;padding:24px 0 8px;">';
+        html += '<h1 style="font-size:26px;font-weight:700;color:var(--navy);margin-bottom:6px;">Your ' + coverLabel + ' Car Insurance Quote</h1>';
+        html += '<p style="color:var(--text-light);font-size:15px;">Quote reference: <strong style="color:var(--navy);">' + regRef + '</strong> &nbsp;&bull;&nbsp; Valid for 30 days</p>';
+        html += '</div>';
+
+        /* Quote hero with two price boxes */
+        html += '<div class="quote-hero">';
+        html += '<div class="quote-hero__label">Choose how you\'d like to pay</div>';
+        html += '<div class="quote-hero__prices">';
+
+        /* Monthly price box */
+        html += '<div class="price-box ' + (data.paymentMethod === 'monthly' ? 'selected' : '') + '" id="price-monthly" onclick="selectPayment(\'monthly\')">';
+        html += '<div class="price-box__period">Monthly</div>';
+        html += '<div class="price-box__amount"><sup>&pound;</sup>' + monthlyFmt.split('.')[0] + '<sup style="font-size:22px;vertical-align:super;">.' + monthlyFmt.split('.')[1] + '</sup></div>';
+        html += '<div class="price-box__sub">per month (inc. 13% credit charge)</div>';
+        html += '</div>';
+
+        /* Annual price box */
+        html += '<div class="price-box ' + (data.paymentMethod === 'annual' ? 'selected' : '') + '" id="price-annual" onclick="selectPayment(\'annual\')">';
+        html += '<div class="price-box__period">Annually</div>';
+        html += '<div class="price-box__amount"><sup>&pound;</sup>' + annualFmt + '</div>';
+        html += '<div class="price-box__sub">per year &ndash; best value</div>';
+        html += '</div>';
+
+        html += '</div>';/* /quote-hero__prices */
+
+        html += '<div class="quote-hero__actions">';
+        html += '<button class="button button--primary button--large" onclick="alert(\'This is a demo \u2013 no actual purchase will be made.\')">Buy now &rarr;</button>';
+        html += '<a href="your-cover.html" class="button button--secondary">Amend cover</a>';
+        html += '</div>';
+        html += '</div>';/* /quote-hero */
+
+        /* Two summary cards */
+        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;" class="summary-grid">';
+
+        /* Cover summary */
+        html += '<div class="card" style="margin-bottom:0;">';
+        html += '<h2 class="card__title" style="font-size:16px;">Your cover summary</h2>';
+        html += '<table class="summary-list"><tbody>';
+        html += '<tr><td>Cover type</td><td>' + coverLabel + '</td></tr>';
+        html += '<tr><td>Start date</td><td>' + fmtDate(data.startDate) + '</td></tr>';
+        html += '<tr><td>Voluntary excess</td><td>' + fmtExcess(data.voluntaryExcess) + '</td></tr>';
+        html += '<tr><td>Annual mileage</td><td>' + fmtMileage(data.annualMileage) + '</td></tr>';
+        html += '<tr><td>Overnight parking</td><td>' + fmtParking(data.overnightParking) + '</td></tr>';
+        html += '<tr><td>Vehicle</td><td>' + vehLabel + '</td></tr>';
+        if (data.registration) html += '<tr><td>Registration</td><td style="letter-spacing:2px;">' + data.registration.toUpperCase() + '</td></tr>';
+        html += '</tbody></table></div>';
+
+        /* Driver summary */
+        html += '<div class="card" style="margin-bottom:0;">';
+        html += '<h2 class="card__title" style="font-size:16px;">Your details summary</h2>';
+        html += '<table class="summary-list"><tbody>';
+        html += '<tr><td>Name</td><td>' + fmtTitle(data.title) + ' ' + data.firstName + ' ' + data.lastName + '</td></tr>';
+        html += '<tr><td>Date of birth</td><td>' + (storedDob || '&mdash;') + '</td></tr>';
+        if (data.maritalStatus) html += '<tr><td>Marital status</td><td>' + data.maritalStatus + '</td></tr>';
+        html += '<tr><td>Driving licence</td><td>' + fmtLicence(data.licenceType) + '</td></tr>';
+        html += '<tr><td>Years NCB</td><td>' + (data.ncbYears === '9' ? '9+' : data.ncbYears) + ' years</td></tr>';
+        html += '<tr><td>Claims (5 yrs)</td><td>' + (+data.claimsCount === 0 ? 'None' : data.claimsCount) + '</td></tr>';
+        html += '<tr><td>Convictions (5 yrs)</td><td>' + (+data.convictionsCount === 0 ? 'None' : data.convictionsCount) + '</td></tr>';
+        html += '</tbody></table></div>';
+
+        html += '</div>';/* /summary-grid */
+
+        /* Info note */
+        html += '<div class="info-box info-box--navy" style="margin-bottom:20px;">';
+        html += '<span>&#10003;</span>';
+        html += '<span>This quote is valid for 30 days. Your reference is <strong>' + regRef + '</strong>. ';
+        html += 'Swinton Go! Insurance is arranged and administered by BISL Limited, authorised and regulated by the FCA.</span>';
+        html += '</div>';
+
+        /* Start again */
+        html += '<p style="text-align:center;margin-top:16px;margin-bottom:32px;">';
+        html += '<a href="index.html" style="color:var(--navy);font-size:14px;text-decoration:underline;" onclick="Store.clear();">&larr; Start a new quote</a>';
+        html += '</p>';
+
+        document.getElementById('quote-output').innerHTML = html;
+
+        /* Responsive summary grid */
+        var grid = document.querySelector('.summary-grid');
+        if (grid && window.innerWidth < 640) {
+            grid.style.gridTemplateColumns = '1fr';
+        }
+    });
+
+    function selectPayment(type) {
+        var monthly = document.getElementById('price-monthly');
+        var annual  = document.getElementById('price-annual');
+        if (!monthly || !annual) return;
+        if (type === 'monthly') {
+            monthly.classList.add('selected');
+            annual.classList.remove('selected');
+        } else {
+            annual.classList.add('selected');
+            monthly.classList.remove('selected');
+        }
+    }
+    </script>
+</body>
+</html>
