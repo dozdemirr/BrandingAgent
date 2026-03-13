@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Quote - Swinton Go! Insurance</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-step="4">
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="page-header__wrapper">
+            <a href="index.html" class="page-header__logo">
+                <img src="images/logo.png" alt="Swinton Go! Insurance">
+            </a>
+            <nav class="progress-nav" aria-label="Quote progress">
+                <div class="progress-nav__step" data-step="1">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your details</span>
+                </div>
+                <div class="progress-nav__step" data-step="2">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your car</span>
+                </div>
+                <div class="progress-nav__step" data-step="3">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Your cover</span>
+                </div>
+                <div class="progress-nav__step" data-step="4">
+                    <div class="progress-nav__dot"></div>
+                    <span class="progress-nav__label">Quote</span>
+                </div>
+            </nav>
+            <div id="quote-header-price" style="display:none;text-align:right;font-size:13px;color:var(--text-muted);flex-shrink:0;">
+                <div id="quote-ref-header" style="font-size:12px;">Quote number</div>
+                <div id="quote-price-header" style="font-weight:800;color:var(--navy);font-size:16px;"></div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div class="page-content" id="quote-output">
+            <div class="loading-overlay">
+                <div class="spinner"></div>
+                <p style="color:var(--text-muted);font-size:15px;">Calculating your quote&hellip;</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Trust strip -->
+    <div class="trust-strip">
+        <div class="trust-strip__inner">
+            <div class="trust-item"><span class="trust-item__icon">✓</span> FCA Authorised &amp; Regulated</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> No hidden fees</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> RAC Breakdown included</div>
+            <div class="trust-item"><span class="trust-item__icon">✓</span> UK-based claims team, 24/7</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer__inner">
+            <div class="footer__copy">
+                &copy; <span id="footer-year"></span> <strong>Swinton Go!</strong> All rights reserved
+            </div>
+            <div class="footer__links">
+                <a href="#">Important info</a>
+                <span>/</span>
+                <a href="#">Privacy policy</a>
+                <span>/</span>
+                <a href="#">Cookie policy</a>
+                <span>/</span>
+                <a href="#">Contact us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        /* Retrieve all store values */
+        var data = {
+            title:            Store.get('title')            || '',
+            firstName:        Store.get('firstName')        || '',
+            lastName:         Store.get('lastName')         || '',
+            dob:              Store.get('dob')              || '',
+            registration:     Store.get('registration')     || '',
+            vehicle:          Store.get('vehicle')          || {},
+            purchaseDate:     Store.get('purchaseDate')     || '',
+            carOwner:         Store.get('carOwner')         || '',
+            carUse:           Store.get('carUse')           || '',
+            annualMileage:    Store.get('annualMileage')    || '0',
+            overnightParking: Store.get('overnightParking') || '',
+            modifications:    Store.get('modifications')    || 'no',
+            licenceType:      Store.get('licenceType')      || 'full-uk',
+            licenceYears:     Store.get('licenceYears')     || '0',
+            ncbYears:         Store.get('ncbYears')         || '0',
+            claimsCount:      Store.get('claimsCount')      || 0,
+            convictionsCount: Store.get('convictionsCount') || 0,
+            coverType:        Store.get('coverType')        || 'comprehensive',
+            startDate:        Store.get('startDate')        || '',
+            voluntaryExcess:  Store.get('voluntaryExcess')  || '250',
+            paymentMethod:    Store.get('paymentMethod')    || 'monthly'
+        };
+
+        /* Parse stored DOB (DD/MM/YYYY) into a Date for calculateQuote */
+        if (data.dob) {
+            var parts = data.dob.split('/');
+            if (parts.length === 3) {
+                data.dob = new Date(+parts[2], +parts[1] - 1, +parts[0]).toISOString();
+            }
+        }
+
+        var prices = calculateQuote(data);
+
+        /* --- Formatters --- */
+        function fmtCoverType(v) {
+            return { tpo:'Third Party Only', tpft:'Third Party Fire & Theft', comprehensive:'Comprehensive' }[v] || v;
+        }
+        function fmtDate(isoStr) {
+            var d = new Date(isoStr + 'T00:00:00');
+            return d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+        }
+        function fmtMileage(v) {
+            var n = parseInt(v, 10);
+            if (n >= 50001) return '50,000+ miles';
+            return n.toLocaleString('en-GB') + ' miles';
+        }
+        function fmtParking(v) {
+            return { garage:'Locked garage', driveway:'Driveway at home', street:'Street near home', carpark:'Car park', other:'Other' }[v] || v;
+        }
+        function fmtLicence(v) {
+            return { 'full-uk':'Full UK licence', 'prov-uk':'Provisional UK licence', eu:'European Union licence', intl:'International licence' }[v] || v;
+        }
+        function fmtTitle(v) {
+            return { MR:'Mr', MRS:'Mrs', MS:'Ms', MISS:'Miss', MX:'Mx', DR:'Dr' }[v] || v;
+        }
+        function fmtExcess(v) { return '£' + parseInt(v, 10).toLocaleString('en-GB'); }
+
+        var veh       = data.vehicle || {};
+        var vehLabel  = veh.make ? (veh.make + ' ' + veh.model + (veh.variant ? ' ' + veh.variant : '')) : '—';
+        var refNum    = 'P9Q' + Math.floor(100000 + Math.random() * 900000);
+        var coverLabel = fmtCoverType(data.coverType);
+
+        var monthlyFmt = prices.monthly.toFixed(2);
+        var annualFmt  = prices.annual.toLocaleString('en-GB');
+
+        /* Update header */
+        var headerPrice = document.getElementById('quote-header-price');
+        if (headerPrice) {
+            document.getElementById('quote-ref-header').textContent = 'Quote number: ' + refNum;
+            document.getElementById('quote-price-header').textContent = '£' + monthlyFmt + ' / monthly';
+            headerPrice.style.display = '';
+        }
+
+        /* --- Build output HTML --- */
+        var html = '';
+
+        /* Greeting + subtitle */
+        html += '<div class="quote-hero">';
+        html += '<div class="quote-hero__greeting">Hi ' + data.firstName + ',</div>';
+        html += '<div class="quote-hero__subtitle">here are your quote details&hellip;</div>';
+        html += '</div>';
+
+        /* Two-column layout */
+        html += '<div class="two-col two-col--main">';
+
+        /* ── LEFT column ── */
+        html += '<div>';
+
+        /* Policy benefits */
+        html += '<div class="summary-box">';
+        html += '<h3>Your policy benefits</h3>';
+        html += '<ul class="benefit-list">';
+        html += '<li>Drive other cars</li>';
+        html += '<li>Windscreen cover</li>';
+        html += '<li>Courtesy car</li>';
+        html += '<li>Medical expenses</li>';
+        html += '<li>Personal accident benefits</li>';
+        html += '<li>Personal belongings</li>';
+        html += '<li>Replacement locks</li>';
+        html += '<li>Driving abroad</li>';
+        html += '</ul>';
+        html += '<p style="font-size:13px;color:var(--text-muted);margin-top:12px;">For details of the key benefits and limitations please <a href="#">click here</a></p>';
+        html += '<p style="font-size:13px;margin-top:6px;"><a href="#" style="color:var(--navy);">📄 Insurance Product Information Document</a></p>';
+        html += '</div>';
+
+        /* Your cover / insurance policy */
+        html += '<div class="summary-box">';
+        html += '<h3>Your cover</h3>';
+        html += '<h4 style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px;">Your insurance policy</h4>';
+        html += '<table class="summary-table"><tbody>';
+        html += '<tr><td>Cover type</td><td>' + coverLabel + '</td></tr>';
+        html += '<tr><td>Start date</td><td>' + fmtDate(data.startDate) + '</td></tr>';
+        html += '<tr><td>No Claims Discount</td><td>' + (+data.ncbYears >= 9 ? '9 years or more' : data.ncbYears + ' years') + '</td></tr>';
+        html += '</tbody></table>';
+        html += '</div>';
+
+        /* Additional cover */
+        html += '<div class="summary-box">';
+        html += '<h3>Your additional cover</h3>';
+        html += '<h4 style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">Selected by you</h4>';
+        html += '<p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">You will have the option to edit these before payment.</p>';
+        html += '<ul style="list-style:none;padding:0;">';
+        html += '<li style="display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:6px;"><span style="color:var(--success);">✓</span> No Claims Discount Protection</li>';
+        html += '<li style="display:flex;align-items:center;gap:8px;font-size:14px;"><span style="color:var(--success);">✓</span> RAC Breakdown cover</li>';
+        html += '</ul>';
+        html += '<div class="divider"></div>';
+        html += '<h4 style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">Included as standard</h4>';
+        html += '<p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">This product includes the following as standard, and as such can\'t be removed.</p>';
+        html += '<p style="font-size:13px;"><a href="#" style="color:var(--navy);">📄 Motor Legal Protection</a></p>';
+        html += '</div>';
+
+        html += '</div>';
+        /* ── end LEFT ── */
+
+        /* ── RIGHT column ── */
+        html += '<div>';
+
+        /* Your price */
+        html += '<div class="quote-price-box">';
+        html += '<h3>Your price</h3>';
+        html += '<p class="quote-price-box__label">You have chosen to pay by instalments:</p>';
+        html += '<div class="quote-price-monthly"><sup>£</sup>' + monthlyFmt + ' <small>/ x11 months</small></div>';
+        /* Deposit = first month; total = deposit + (monthly * 11); annual saving shown separately */
+        var deposit    = prices.monthly.toFixed(2);
+        var totalPay   = (prices.monthly * 12).toFixed(2);
+        html += '<p style="font-size:13px;color:var(--navy-light);margin-bottom:12px;">';
+        html += 'Initial deposit £' + deposit + ', total amount payable £' + totalPay;
+        html += '</p>';
+        html += '<div class="quote-price-annual">';
+        html += 'or <strong>£' + annualFmt + '</strong> when you pay annually<br>';
+        html += '<a href="#" style="font-size:13px;">Pay annually instead</a>';
+        html += '</div>';
+        html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">';
+        html += '<button class="btn btn--primary btn--large" onclick="alert(\'Demo only – no actual purchase\')">Buy now – £' + monthlyFmt + '/month</button>';
+        html += '</div>';
+        html += '</div>';
+
+        /* Your excess */
+        html += '<div class="summary-box">';
+        html += '<h3>Your excess</h3>';
+        html += '<h4 style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px;">Your insurance policy</h4>';
+        html += '<table class="summary-table"><tbody>';
+        html += '<tr><td>Voluntary excess</td><td>' + fmtExcess(data.voluntaryExcess) + '</td></tr>';
+        html += '<tr><td>Compulsory excess</td><td>£150</td></tr>';
+        html += '<tr><td>Total excess</td><td>£' + (parseInt(data.voluntaryExcess, 10) + 150).toLocaleString('en-GB') + '</td></tr>';
+        html += '</tbody></table>';
+        html += '<p style="font-size:13px;color:var(--text-muted);margin-top:12px;">Additional excesses may apply for young or inexperienced drivers. <a href="#">Click here</a> for details.</p>';
+        html += '</div>';
+
+        /* Driver summary */
+        html += '<div class="summary-box">';
+        html += '<h3>Your details summary</h3>';
+        html += '<table class="summary-table"><tbody>';
+        html += '<tr><td>Name</td><td>' + fmtTitle(data.title) + ' ' + data.firstName + ' ' + data.lastName + '</td></tr>';
+        html += '<tr><td>Date of birth</td><td>' + (Store.get('dob') || '—') + '</td></tr>';
+        html += '<tr><td>Vehicle</td><td>' + vehLabel + '</td></tr>';
+        html += '<tr><td>Annual mileage</td><td>' + fmtMileage(data.annualMileage) + '</td></tr>';
+        html += '<tr><td>Overnight parking</td><td>' + fmtParking(data.overnightParking) + '</td></tr>';
+        html += '<tr><td>Driving licence</td><td>' + fmtLicence(data.licenceType) + '</td></tr>';
+        html += '<tr><td>Claims</td><td>' + (+data.claimsCount === 0 ? 'None' : data.claimsCount) + '</td></tr>';
+        html += '<tr><td>Convictions</td><td>' + (+data.convictionsCount === 0 ? 'None' : data.convictionsCount) + '</td></tr>';
+        html += '</tbody></table>';
+        html += '</div>';
+
+        /* Reference + start again */
+        html += '<div class="info-box">';
+        html += '<span>✓</span>';
+        html += '<span>This quote is valid for 30 days. Your reference number is <strong>' + refNum + '</strong>.</span>';
+        html += '</div>';
+        html += '<p style="text-align:center;margin-top:16px;">';
+        html += '<a href="index.html" style="font-size:14px;" onclick="Store.clear();">← Start again</a>';
+        html += '</p>';
+
+        html += '</div>';
+        /* ── end RIGHT ── */
+
+        html += '</div>'; /* end two-col */
+
+        document.getElementById('quote-output').innerHTML = html;
+    });
+    </script>
+</body>
+</html>

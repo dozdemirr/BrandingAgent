@@ -1,0 +1,67 @@
+Swinton Go! Insurance – Rebranded Website
+Limitations.txt
+==========================================
+
+LIMITATIONS ENCOUNTERED DURING REBRANDING
+==========================================
+
+1. IMAGE VIEWING LIMIT
+   - The Playwright/tool environment limits the number of design images that can be
+     viewed in one session to 5 images. The New_Design folder contains approximately
+     100+ screenshot files (Desktop Pre Quote 2026-03-09 HHMMSS.png).
+   - Only the following images were fully viewed during this session:
+       * Page 1 - Desktop Pre Quote 2026-03-09 172525.png  (Step 1 – Your Details)
+       * Desktop Pre Quote 2026-03-09 172447.png           (Modal / overlay)
+       * Desktop Pre Quote 2026-03-09 172525.png           (Step 1 variant)
+       * your-cover.png                                     (Step 3 – Your Cover banner)
+       * The quote page design was described via the user-provided image URL
+   - The designs for pages 2 (Your Car) and intermediate scroll states of other pages
+     were inferred from the legacy app structure and the visible design patterns from
+     Page 1. Remaining ~95 screenshots could not be individually examined.
+
+2. FONT AVAILABILITY
+   - The exact proprietary font used in the Swinton Go! brand could not be identified
+     from the screenshots alone. 'Nunito Sans' (Google Fonts) was used as a close
+     geometric sans-serif match. In production, replace with the official brand font.
+
+3. EXACT COLOUR CODES
+   - Brand colours (orange #e84c0e, navy #1c3f6e) were inferred visually from the
+     design screenshots. Exact hex values should be confirmed against the official
+     Swinton Go! brand guidelines.
+
+4. LOGO RENDERING
+   - The logo.png is used from the New_Design folder as-is. No SVG version was
+     available, so the PNG may not scale perfectly at all resolutions.
+
+5. STUB / DEMO DATA
+   - All API calls are stubbed with dummy data:
+       * Vehicle lookup (DVLA): returns a hardcoded VW Golf 2019 for any registration,
+         or recognises "D500 NLE" specifically.
+       * Quote pricing: uses a simple algorithmic calculation – not a real insurer API.
+       * No actual purchase or payment processing is implemented.
+
+6. ADDITIONAL PAGES IN DESIGN
+   - The real Swinton Go! journey appears to include additional steps beyond the 4
+     pages in the legacy app: "Extras", "Review", and "Pay" steps were visible in the
+     quote page header. These additional steps have NOT been implemented as they were
+     not present in the source Example_Website. Only the original 4-page flow was
+     rebranded.
+
+7. RESPONSIVE BREAKPOINTS
+   - Mobile/tablet designs were not visible in the available screenshots. Responsive
+     CSS was written based on best-practice breakpoints (768px, 480px). The exact
+     mobile design may differ from the actual Swinton Go! specifications.
+
+8. INTERACTIVE MODALS
+   - A modal popup ("Important information") was visible in one screenshot. This was
+     not present in the Example_Website and has not been implemented in this version.
+     It would need to be added as an enhancement.
+
+9. FAVICON
+   - No favicon was provided in the New_Design folder. The favicon.ico reference has
+     been removed. Add a branded favicon when available.
+
+10. EXTERNAL DEPENDENCIES
+    - The app uses Google Fonts (Nunito Sans) which requires internet access on first
+      load. The app functions offline but will fall back to system sans-serif fonts
+      without internet connectivity.
