@@ -1,0 +1,32 @@
+Work required: Create an exact copy of a Legacy app but with a new design including logo and colors.
+
+Steps:
+
+- Examine existing code ... code is located in the folder ./Legacy_App
+
+- Examine the new designs... images are in the folder ./New_Design
+
+- Crawl the website at ./Legacy_App because the app you create should have all that functionality 
+
+- Add any additional html pages you need to match all the screenshots in ./New_Design
+
+- Use 'Page 1' design as first web page
+
+- Use **`your_cover.png`** as the **final page** in the journey (`your_cover.html`)
+
+- Stub out any API calls in the code to return dummy data for now 
+
+- Create new stylesheets for new design 
+
+- Use the logo.png in the New_Design folder for the top left logo always
+
+- Create a new app code in the folder ./New_App 
+
+- Use Playright to check application works 
+
+- Explain any limitations you encountered while working in the Limitations.txt file such as only being able to view X number of images while running 
+
+
+Key rule:  
+**Functionality must match the Legacy app exactly.  
+Visual appearance must match the New Design screenshots.**
