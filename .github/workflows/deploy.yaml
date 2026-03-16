@@ -20,7 +20,7 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: upload
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          azure_static_web_apps_api_token: 1ec038d4c841cc1651fa0fdb8c750df6fdac1625a4218d6b92c9a6e1baaa47a901-9c261953-dddc-4c52-858b-4fb5b362e3a001e051202050041e
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           app_location: "New_Website"
           api_location: ""
