@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<IsPackable>true</IsPackable>
+
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<Copyright>Copyright © BGLi Ltd 2023</Copyright>
+		<Description>Bank Of Scotland MotorQuote</Description>
+		<Authors>BGLi Ltd</Authors>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="BGL.UI.BankOfScotland.Resources" Version="8.5.2" />
+		<PackageReference Include="BGL.UI.Common.Resources" Version="11.7.0" />
+		<PackageReference Include="BGL.UI.Common.Scripts" Version="10.3.4" />
+		<PackageReference Include="BGLi.BaseApp.BaseApplication" Version="14.0.0" />
+		<PackageReference Include="BGLi.Components.AdditionalDetails" Version="12.0.0" />
+		<PackageReference Include="BGLi.Components.Basket" Version="13.0.0" />
+		<PackageReference Include="BGLi.Components.CoverDetails" Version="25.0.0" />
+		<PackageReference Include="BGLi.Components.CoverRange" Version="11.0.0" />
+		<PackageReference Include="BGLi.Components.DemandsAndNeeds" Version="18.0.0.1" />
+		<PackageReference Include="BGLi.Components.DriverDetails" Version="15.0.0" />
+		<PackageReference Include="BGLi.Components.Footer" Version="12.0.0" />
+		<PackageReference Include="BGLi.Components.GoogleTagManager" Version="13.0.0" />
+		<PackageReference Include="BGLi.Components.MarketingPreferences" Version="13.0.0" />
+		<PackageReference Include="BGLi.Components.Navigation" Version="12.0.0" />
+		<PackageReference Include="BGLi.Components.OptionalExtras" Version="12.0.0" />
+		<PackageReference Include="BGLi.Components.PageReloader" Version="12.0.0" />
+		<PackageReference Include="BGLi.Components.TakePayment" Version="14.0.0" />
+		<PackageReference Include="BGLi.Components.TermsAndConds" Version="12.0.0" />
+		<PackageReference Include="BGLi.Components.VehicleDetails" Version="11.0.0" />
+		<PackageReference Include="BGLi.Components.VirtualAssistant" Version="12.0.1" />
+		<PackageReference Include="BGLi.Components.WelcomeQuote" Version="11.0.0" />
+		<PackageReference Include="BGLi.Security.Web.Authentication" Version="6.4.3" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Keys\key.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="RD &quot;$(ProjectDir)\TempFiles\&quot; /s/q&#xD;&#xA;echo Removed TempFiles folder" />
+	</Target>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="cd &quot;$(ProjectDir)&quot;&#xD;&#xA;call npm install&#xD;&#xA;call npm rebuild node-sass&#xD;&#xA;call npm run gulp" />
+	</Target>
+</Project>
