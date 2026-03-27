@@ -1,0 +1,35 @@
+{
+  "name": "bgl.web.bankofscotland.motorquote",
+  "version": "1.0.0",
+  "description": "package required for bank of scotland insurance motorquote webapp",
+  "repository": {
+    "type": "bitbucket",
+    "url": "https://bitbucket.org/BGL-IDO/web-net-apps/overview"
+  },
+"type": "module",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.24.1",
+    "@babel/preset-env": "^7.24.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-terser": "^0.4.4",
+    "del": "^6.0.0",
+    "glob": "^10.3.10",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-merge-json": "2.1.1",
+    "gulp-sass": "^5.1.0",
+    "gulp-sequence": "1.0.0",
+    "merge-stream": "^2.0.0",
+    "rollup": "^4.13.0",
+    "sass": "^1.77.1"
+  },
+  "scripts": {
+    "gulp": "gulp build --gulpfile gulpfile.js && node createJsBundles.js && rollup --config",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
